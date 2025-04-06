@@ -5,43 +5,31 @@ import plotly.graph_objects as go
 import sys
 import os
 
-# Add the project directory to the path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# Import configuration and utilities
 import config
 from src.data_processing.loader import load_emissions_data
 from components.sidebar import add_year_range_selector
 from components.filters import add_source_filter
 
-# Set page config
-st.set_page_config(page_title=f"Global Trends - {config.APP_TITLE}", 
-                   page_icon=config.APP_ICON, 
-                   layout="wide")
+st.set_page_config(page_title=f"Global Trends - {config.APP_TITLE}", page_icon=config.APP_ICON, layout="wide")
 
 def main():
-    # Page title
     st.title("Global CO2 Emission Trends")
     st.write("Analyze global emissions trends over time and by source.")
     
-    # Load data
     df = load_emissions_data()
     
-    # Add sidebar filters
     st.sidebar.header("Filters")
     start_year, end_year = add_year_range_selector(df)
     selected_sources = add_source_filter(["Coal", "Oil", "Gas", "Cement", "Flaring", "Other"])
     
-    # Filter data based on year range
     filtered_df = df[(df['Year'] >= start_year) & (df['Year'] <= end_year)]
     
-    # Global trends over time
     st.header("Global Emissions Over Time")
     
-    # Calculate global totals by year
     global_by_year = filtered_df.groupby('Year').agg({'Total': 'sum'}).reset_index()
     
-    # Create time series chart
     fig1 = px.line(
         global_by_year, 
         x='Year', 
@@ -59,10 +47,8 @@ def main():
     
     st.plotly_chart(fig1, use_container_width=True)
     
-    # Source breakdown over time
     st.header("Emissions by Source Over Time")
     
-    # Calculate global totals by year and source
     source_columns = [s for s in selected_sources if s in filtered_df.columns]
     if source_columns:
         global_by_source = filtered_df.groupby('Year')[source_columns].sum().reset_index()
@@ -103,7 +89,6 @@ def main():
     # Remove the first row which has NaN for YoY change
     yoy_df = global_by_year.dropna(subset=['YoY_Change'])
     
-    # Create bar chart for YoY changes
     fig3 = px.bar(
         yoy_df,
         x='Year',
@@ -124,14 +109,12 @@ def main():
     
     st.plotly_chart(fig3, use_container_width=True)
     
-    # Additional context
     st.markdown("### About the Data")
     st.write(
         "This visualization shows global CO2 emissions trends based on data from the Global Carbon Budget 2022. "
         "The data includes emissions from various sources including coal, oil, gas, cement production, and flaring."
     )
     
-    # Notable events in emissions history
     st.markdown("### Notable Events")
     events = [
         {"year": 1973, "event": "Oil Crisis", "description": "Global oil shortages led to temporary emissions reductions."},
