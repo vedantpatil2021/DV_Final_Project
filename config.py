@@ -1,3 +1,4 @@
+
 APP_TITLE = "Global CO2 Emissions Dashboard"
 APP_ICON = "🌍"
 APP_DESCRIPTION = "An interactive dashboard for exploring CO2 emissions data from the Global Carbon Budget 2022."
