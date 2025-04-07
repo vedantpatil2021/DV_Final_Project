@@ -60,7 +60,6 @@ def main():
             value_name='Emissions'
         )
         
-        # Create stacked area chart
         fig2 = px.area(
             global_by_source_melted, 
             x='Year', 
@@ -80,13 +79,10 @@ def main():
         
         st.plotly_chart(fig2, use_container_width=True)
     
-    # Year-over-year changes
     st.header("Annual Change in Global Emissions")
     
-    # Calculate year-over-year percent changes
     global_by_year['YoY_Change'] = global_by_year['Total'].pct_change() * 100
     
-    # Remove the first row which has NaN for YoY change
     yoy_df = global_by_year.dropna(subset=['YoY_Change'])
     
     fig3 = px.bar(

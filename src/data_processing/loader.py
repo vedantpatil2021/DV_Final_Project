@@ -29,29 +29,19 @@ def load_emissions_data():
 
 @st.cache_data
 def load_per_capita_data():
-    """
-    Load and prepare the per capita emissions data.
-    
-    Returns:
-        pd.DataFrame: Prepared per capita emissions dataframe
-    """
     try:
-        # Check if file exists
         if not os.path.exists(config.PER_CAPITA_EMISSIONS_FILE):
             st.error(f"Error: Data file not found at {config.PER_CAPITA_EMISSIONS_FILE}")
             return pd.DataFrame()
         
-        # Load data
         df = pd.read_csv(config.PER_CAPITA_EMISSIONS_FILE)
         
-        # Basic validation
         required_columns = ['Country', 'ISO 3166-1 alpha-3', 'Year', 'Total']
         for col in required_columns:
             if col not in df.columns:
                 st.error(f"Error: Required column '{col}' not found in data")
                 return pd.DataFrame()
         
-        # Convert Year to integer
         df['Year'] = df['Year'].astype(int)
         
         return df
@@ -67,7 +57,6 @@ def load_sources_data():
             st.error(f"Error: Data file not found at {config.SOURCES_FILE}")
             return pd.DataFrame()
         
-        # Load data
         df = pd.read_csv(config.SOURCES_FILE)
         
         required_columns = ['Country', 'ISO 3166-1 alpha-3', 'Year']
@@ -86,22 +75,11 @@ def load_sources_data():
 
 @st.cache_data
 def load_metadata(metadata_file):
-    """
-    Load metadata from a JSON file.
-    
-    Args:
-        metadata_file (str): Path to the metadata JSON file
-        
-    Returns:
-        dict: Metadata dictionary or empty dict if file not found
-    """
     try:
-        # Check if file exists
         if not os.path.exists(metadata_file):
             st.warning(f"Metadata file not found at {metadata_file}")
             return {}
         
-        # Load JSON metadata
         with open(metadata_file, 'r') as f:
             metadata = json.load(f)
         
