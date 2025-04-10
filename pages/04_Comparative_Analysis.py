@@ -156,23 +156,6 @@ def main():
         )
     
     st.plotly_chart(fig6, use_container_width=True)
-    
-    st.markdown("""
-    ### Understanding the Scatter Plot
-    
-    This scatter plot shows the relationship between total emissions and per capita emissions:
-    
-    - **Upper right**: High total emissions and high per capita emissions (typically wealthy, industrialized countries)
-    - **Upper left**: Low total emissions but high per capita emissions (often wealthy but small countries)
-    - **Lower right**: High total emissions but lower per capita emissions (typically large developing countries)
-    - **Lower left**: Low total and per capita emissions (typically less industrialized countries)
-    """)
-    
-    st.header("Additional Comparative Metrics")
-    st.write(
-        "This dashboard could be extended with additional metrics such as emissions per GDP, "
-        "which would provide insights into carbon intensity of different economies."
-    )
 
 if __name__ == "__main__":
     main()
